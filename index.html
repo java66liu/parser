@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>编译原理>>语法分析器</title>
+	 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+	 <script src="js/jquery.js"></script>
+	 <script src="js/bootstrap.min.js"></script>
+	 <style type="text/css">
+ 			.show{
+ 				height: 500px;
+ 				overflow-y: scroll; 
+ 			}
+
+	 </style>
+</head>
+<body>
+	<div class="container">
+		<h1>编译原理>>语法分析器</h1>
+
+		<textarea class="ori_code span7 well" id="ori_code" rols="30" rows="25" placeholder="please input the original code" onkeyup=ala()></textarea>
+
+		<div class="show span4 well" id="show">the results:</div>
+	</div>
+		<script type="text/javascript">
+		var str;
+		var postion,length;
+		ori_code = document.getElementById("ori_code");
+		show = document.getElementById("show");
+			//E -> E+T | E-T | T
+			function as()
+			{
+				if(str[postion] == '+')
+					{
+						result += "E -> E + T ..." + str[postion]+"<br />";
+						++postion;
+						xc();
+					}
+					else if(str[postion] == '-')
+					{
+						result += "E -> E - T ..." + str[postion]+"<br />";
+						++postion;
+						xc();
+					}
+					else
+					{
+						result += "E -> T ..." + str[postion]+"<br />";
+
+						//alert(result);
+						
+						xc();
+					}
+			}
+
+			//T -> T*F | T/F | F
+			function xc()
+			{
+				
+				if(str[postion] == '*')
+				{
+					result += "T -> T * F ..." + str[postion]+"<br />";
+					
+					++postion;
+					end();
+				}
+				else if(str[postion] == '/')
+				{
+					result += "T -> T / F ..." + str[postion]+"<br />";
+					
+					++postion;
+					end();
+				}
+				else
+				{
+					result += "T -> F ..." + str[postion]+"<br />";
+					
+					end();
+				}
+			}
+
+			//F -> (E) | i
+			function end()
+			{
+				if( str[postion] >= 0 && str[postion] <= 9)
+				{
+					result += "F -> i ..." + str[postion]+"<br />";
+					
+					++postion;
+
+				}
+				else if(str[postion] == '(')
+				{
+					result += "T -> ( E ) ..." + str[postion]+"<br />";
+					
+					++postion;
+					as();
+
+					if(str[postion] == ')')
+					{
+						result += "T -> ( E ) ..."+str[postion] +"<br />";
+						
+						++postion;
+					}
+					else
+					{
+						result += "右侧括号缺失 ')' ,分析失败，格式错误！<br />";
+						
+						--postion;
+						return ;
+					}
+				}
+				else
+				{
+					result += "输入信息不为数字无法识别: " + str[postion] + ", 分析失败，格式错误！<br />";
+					
+					return ;
+				}
+
+				if(str[postion] == ')')
+					return ;
+				else if(postion < length)
+					as();
+			}
+
+			// 主控函数
+			function ala()
+			{
+				result = " ";
+				str = ori_code.value;
+				postion = 0;
+				length = str.length;
+				if(str)
+				as();
+				show.innerHTML = result;
+				//
+/*				if(postion == length)
+				{
+					result += "算式分析成功，正确！<br />算式结果: "+str;
+				}
+				else if(str[postion] == ')')
+				{
+					result += "未能识别字符: "+str[postion] +", 分析失败，格式错误！";
+				}
+*/
+				
+			}
+/*				if(str[postion] == ')')
+					return ;
+				else if(postion < length)
+					As();
+			}
+*/
+	</script>
+</body>
+
+</html>
